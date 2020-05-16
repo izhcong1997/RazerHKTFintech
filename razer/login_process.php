@@ -19,7 +19,7 @@ if (isset($_POST['login'])) {
         } else {
             $msg = "username and Password does not match";
             $_SESSION['error'] = $msg;
-            header("location:login.php");
+            header("location:index.php");
             exit;
         }
     } else {

@@ -19,11 +19,12 @@ if( isset($_POST['username']) && isset($_POST['password'])
     $r_password = $_POST['r_password'];
     if(passChk($password) && strlen($password) >= 8 && $r_password == $password){
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $msg = "Successfully Registered!";
+        $msg = "Successfully Registered! <br> Please input your personal information before we proceed with the account creation";
         $dao = new AccountDAO();
         $dao->register($username,$hashed_password);
         $_SESSION['reg'] = $msg;
-        header("location:index.php");
+        $_SESSION['username'] = $username;
+        header("location:Personal_info.php");
         exit;
     } else if($r_password != $password){
         $msg = "Passwords does not match";

@@ -12,6 +12,10 @@ $username = $_SESSION['username'];
 
 <body>
     <h1>Woohooo</h1>
+    <form method = 'POST' action = 'deposit.php'>
+    How much you want to deposit: <input type='text' name = 'Money'>
+    <br>
+    <input type='submit' value ='submit'>
     <hr>
     <a href='logout.php'>Logout!</a>
 </body>

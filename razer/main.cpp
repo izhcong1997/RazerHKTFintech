@@ -23,12 +23,36 @@ namespace GLOBAL
 	6 SelectedPlan
 	7 AP
 	*/
+
+	struct plans
+	{
+		std::string name;
+		std::string MonthlyGoalPercent;
+		std::string PrevBalancePercent;
+		std::string AP;
+
+		plans(std::string n, std::string m = "0", std::string p = "0", std::string a = "0")
+		{
+			name = n;
+			MonthlyGoalPercent = m;
+			PrevBalancePercent = p;
+			AP = a;
+		}
+	};
+
+	std::vector<plans> AllPlans;
+
+}
+
+
+void initPlans ()
+{
+	GLOBAL::plans agro("Aggressive", "0.5", "0.1", "100");
+	GLOBAL::AllPlans.push_back(agro);
 }
 
 int IncrementMonths()
 {
-	return ++GLOBAL::Num_Months;
-
 	for (auto &elem : GLOBAL::fakedatabase)
 	{
 		elem[4] = elem[2];
@@ -46,6 +70,66 @@ int IncrementMonths()
 		}
 	}
 
+	return ++GLOBAL::Num_Months;
+}
+
+void AddNewAccount(std::string name, std::string CurBal = "0", std::string MthlyInc = "0")
+{
+	GLOBAL::fakedatabase.push_back(std::vector<std::string> {name, CurBal, MthlyInc, "-1", "-1", "0" });
+}
+
+void SetCurrentBalance(std::string name, std::string CurBal)
+{
+	for (auto &elem : GLOBAL::fakedatabase)
+	{
+		if (elem[0] == name)
+		{
+			elem[2] = CurBal;
+		}
+	}
+}
+
+void Deposit(std::string name, std::string Val)
+{
+	for (auto &elem : GLOBAL::fakedatabase)
+	{
+		if (elem[0] == name)
+		{
+			elem[2] = std::to_string( std::stoi(elem[2]) + std::stoi(Val));
+		}
+	}
+}
+
+void SetMonthlyGoal(std::string name, std::string goalval)
+{
+	for (auto &elem : GLOBAL::fakedatabase)
+	{
+		if (elem[0] == name)
+		{
+			elem[5] = goalval;
+		}
+	}
+}
+
+void SetSelectedPlan(std::string name, std::string Plan)
+{
+	for (auto &elem : GLOBAL::fakedatabase)
+	{
+		if (elem[0] == name)
+		{
+			elem[5] = "-1";
+
+			for (auto &ele : GLOBAL::AllPlans)
+			{
+				if (ele.name == Plan)
+				{
+					elem[6] = Plan;
+					elem[5] = std::to_string(std::stoi(ele.MonthlyGoalPercent) * std::stoi(elem[2]));
+				}
+			}
+
+		}
+	}
 }
 
 void int_fakedatabase()
@@ -88,34 +172,55 @@ int main()
 	}
 	else
 	{
+		int_fakedatabase();
+		initPlans();
+		//printfakedatabase();
+
 		while (1)
 		{
-			int_fakedatabase();
-			printfakedatabase();
-
 			std::string cmd;
-			while (std::cin >> cmd);
+			do
+				std::cin >> cmd;
+			while (cmd == "\0");
+			std::cout << cmd << std::endl;
+
+			if (cmd == "IncrementMonths")
 			{
-				if (cmd == "IncrementMonths")
-				{
-					IncrementMonths();
-				}
-				else if (cmd == "")
-				{
-
-				}
-				else if (cmd == "exit")
-				{
-					exit(0);
-				}
+				IncrementMonths();
 			}
+			else if (cmd == "AddNewAccount")
+			{
+				std::string name;
+				do
+				{
+					std::cout << "Input Name: " << std::endl;
+					std::cin >> name;
+				}
+				while (cmd == "\0");
 
+				AddNewAccount(name);
 
-			exit(0);
+				printfakedatabase();
 
+			}
+			else if (cmd == "")
+			{
 
+			}
+			else if (cmd == "")
+			{
+
+			}
+			else if (cmd == "PrintAll")
+			{
+				printfakedatabase();
+			}
+			else if (cmd == "exit")
+			{
+				exit(0);
+			}
 		}
+			
 	}
-
 
 }

@@ -3,10 +3,10 @@
 class ConnectionManager {
 
     public function getConnection() {
-        $servername = 'localhost';
-        $username = 'root';
-        $password = '';
-        $dbname = 'account_week12';
+        $servername = 'bank-db-instance2.ccv1wbsl31a1.ap-southeast-1.rds.amazonaws.com';
+        $username = 'cong_bank_admin';
+        $password = 'congbird';
+        $dbname = 'Account';
         $port = '3306';
         
         // Create connection
